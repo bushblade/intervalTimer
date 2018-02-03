@@ -1,5 +1,7 @@
 const intervalBar = document.getElementById('interval-bar'),
+  breakBar = document.getElementById('break-bar'),
   intTime = document.getElementById('int-time'),
+  breakTime = document.getElementById('break-time'),
   sm = document.getElementById('sm'),
   sp = document.getElementById('sp'),
   bm = document.getElementById('bm'),
@@ -10,30 +12,41 @@ const intervalBar = document.getElementById('interval-bar'),
 
 let intMinutes = 5,
   intSeconds = 0,
-  interval;
+  breakMinutes = 1,
+  breakSeconds = 0,
+  interval1,
+  interval2,
+  timerCount = 2;
 
 sm.addEventListener('click', intImeMinus);
 sp.addEventListener('click', intTimePlus);
+bm.addEventListener('click', breakMinus);
+bp.addEventListener('click', breakPlus);
 
 start.addEventListener('click', function () {
-  timer(intMinutes, intTime, intervalBar);
+  timer(intMinutes, intTime, intervalBar, interval1);
   toggleBtns();
 });
 
 stop.addEventListener('click', function () {
-  clearInterval(interval);
+  clearInterval(interval1);
+  clearInterval(interval2);
   intTime.textContent = `${minTwoDidgets(intMinutes)}:${minTwoDidgets(intSeconds)}`;
   intervalBar.value = 0;
   toggleBtns();
+  timerCount = 2;
 });
 
 function toggleBtns() {
   allBtns.forEach(x => x.classList.toggle('is-hidden'));
 }
 
+//interval timings
 function intImeMinus() {
-  intMinutes--;
-  intTime.textContent = `${minTwoDidgets(intMinutes)}:${minTwoDidgets(intSeconds)}`;
+  if (intMinutes !== 1) {
+    intMinutes--;
+    intTime.textContent = `${minTwoDidgets(intMinutes)}:${minTwoDidgets(intSeconds)}`;
+  }
 }
 
 function intTimePlus() {
@@ -41,8 +54,22 @@ function intTimePlus() {
   intTime.textContent = `${minTwoDidgets(intMinutes)}:${minTwoDidgets(intSeconds)}`;
 }
 
+//break timings
+function breakMinus() {
+  if (breakMinutes !== 1) {
+    breakMinutes--;
+    breakTime.textContent = `${minTwoDidgets(breakMinutes)}:${minTwoDidgets(breakSeconds)}`;
+  }
+}
 
-function timer(minutes, timer, bar) {
+function breakPlus() {
+  breakMinutes++;
+  breakTime.textContent = `${minTwoDidgets(breakMinutes)}:${minTwoDidgets(breakSeconds)}`;
+}
+
+
+
+function timer(minutes, timer, bar, interval) {
   let minuteCount = minutes,
     secondsCount = 0,
     totalTime = minutes * 60,
@@ -55,7 +82,10 @@ function timer(minutes, timer, bar) {
     totalTime--;
     secondsCount--;
     secondsCount < 0 ? (secondsCount = 59, minuteCount--) : false;
-    totalTime < 0 ? clearInterval(interval) : false;
+    if (totalTime < 0) {
+      clearInterval(interval);
+      callTimer()
+    }
   }, 1000);
 }
 
@@ -63,4 +93,14 @@ function minTwoDidgets(num) {
   let x = String(num);
   x.length < 2 ? x = `0${num}` : false;
   return x;
+}
+
+
+function callTimer() {
+  if (timerCount % 2 === 0) {
+    timer(breakMinutes, breakTime, breakBar, interval2);
+  } else {
+    timer(intMinutes, intTime, intervalBar, interval1);
+  }
+  timerCount++;
 }
