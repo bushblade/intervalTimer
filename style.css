@@ -1,0 +1,7 @@
+body {
+  padding: 5rem;
+}
+
+.is-rounded {
+  border-radius: 2rem;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css">
+  <link rel="stylesheet" href="style.css">
+  <title>Interval Timer</title>
+</head>
+
+<body>
+  <div class="container">
+    <!-- session -->
+    <div class="columns is-centered">
+      <div class="column is-half is-narrow">
+        <div class="box has-text-centered" id="session">
+          <h1 class="title">Session time</h1>
+          <div class="columns is-mobile">
+            <div class="column is-one-third">
+              <button class="button is-rounded is-fullwidth" id="sm">
+                <span class="icon">
+                  <i class="fa fa-minus"></i>
+                </span>
+              </button>
+            </div>
+            <div class="column is-one-third">
+              <h1 class="title" id="int-time">05:00
+              </h1>
+            </div>
+            <div class="column is-one-third">
+              <button class="button is-rounded is-fullwidth" id="sp">
+                <span class="icon">
+                  <i class="fa fa-plus"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+          <progress class="progress is-large is-primary" value="" max="" id="interval-bar"></progress>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-half is-narrow">
+        <button class="button is-fullwidth is-rounded is-primary is-outlined" id="start">Start</button>
+        <button class="button is-fullwidth is-rounded is-danger is-outlined is-hidden" id="stop">Stop</button>
+      </div>
+    </div>
+
+    <!-- break -->
+    <div class="columns is-centered">
+      <div class="column is-half is-narrow">
+        <div class="box has-text-centered" id="break">
+          <h1 class="title">Break time</h1>
+          <div class="columns is-mobile">
+            <div class="column is-one-third">
+              <button class="button is-rounded is-fullwidth" id="bm">
+                <span class="icon">
+                  <i class="fa fa-minus"></i>
+                </span>
+              </button>
+            </div>
+            <div class="column is-one-third">
+              <h1 class="title">05:00</h1>
+            </div>
+            <div class="column is-one-third">
+              <button class="button is-rounded is-fullwidth" id="bp">
+                <span class="icon">
+                  <i class="fa fa-plus"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+          <progress class="progress is-large is-warning" value="20" max="100" id="break-bar"></progress>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
