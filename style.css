@@ -5,3 +5,7 @@ body {
 .is-rounded {
   border-radius: 2rem;
 }
+
+.columns {
+  margin: 0;
+}
