@@ -1,3 +1,7 @@
+const bleep = new Howl({
+  src: ['bleep.mp3']
+});
+
 const start = document.getElementById('start'),
   stop = document.getElementById('stop'),
   allBtns = Array.from(document.querySelectorAll('button'));
@@ -48,11 +52,12 @@ function setDisplay(x) {
   x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
 }
 
+//minus button stuff to do
 function minus(x) {
   minusAction(x);
   btnRepeat = setInterval(() => {
     minusAction(x);
-  }, 150);
+  }, 100);
 }
 
 function minusAction(x) {
@@ -67,16 +72,21 @@ function minusAction(x) {
   setDisplay(x);
 }
 
+//plus button stuff to do
 function plus(x) {
   plusAction(x);
   btnRepeat = setInterval(() => {
     plusAction(x);
-  }, 150);
+  }, 100);
 }
 
 function plusAction(x) {
-  x.seconds = 0;
-  x.minutes++;
+  if (x.seconds < 59 && x.seconds !== 0) {
+    x.seconds++;
+  } else {
+    x.minutes++;
+    x.seconds = 0;
+  }
   setDisplay(x);
 }
 
@@ -96,6 +106,7 @@ function timer(x) {
     secondsCount < 0 ? (secondsCount = 59, minuteCount--) : false;
     if (totalTime < 0) {
       clearInterval(interval);
+      bleep.play();
       callTimer()
     }
   }, 1000);
