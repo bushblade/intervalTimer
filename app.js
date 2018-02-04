@@ -49,25 +49,35 @@ function setDisplay(x) {
 }
 
 function minus(x) {
+  minusAction(x);
   btnRepeat = setInterval(() => {
-    if (x.minutes > 1) {
-      x.minutes--;
-    } else if (x.seconds === 0) {
-      x.minutes = 0;
-      x.seconds = 59;
-    } else {
-      x.seconds--;
-    }
-    setDisplay(x);
+    minusAction(x);
   }, 150);
 }
 
+function minusAction(x) {
+  if (x.minutes > 1) {
+    x.minutes--;
+  } else if (x.seconds === 0) {
+    x.minutes = 0;
+    x.seconds = 59;
+  } else {
+    x.seconds--;
+  }
+  setDisplay(x);
+}
+
 function plus(x) {
+  plusAction(x);
   btnRepeat = setInterval(() => {
-    x.seconds = 0;
-    x.minutes++;
-    setDisplay(x);
+    plusAction(x);
   }, 150);
+}
+
+function plusAction(x) {
+  x.seconds = 0;
+  x.minutes++;
+  setDisplay(x);
 }
 
 //timer function
