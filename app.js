@@ -10,18 +10,19 @@ const timers = [{
     minutes: 5,
     seconds: 0,
     display: document.getElementById('int-time'),
-    bar: document.getElementById('interval-bar')
+    bar: document.getElementById('interval-bar'),
+    id: 0
   },
   {
     minutes: 5,
     seconds: 0,
     display: document.getElementById('break-time'),
-    bar: document.getElementById('break-bar')
+    bar: document.getElementById('break-bar'),
+    id: 1
   }
 ]
 
 let interval,
-  timerCount = 2,
   btnRepeat;
 
 sm.addEventListener('mousedown', () => minus(timers[0]));
@@ -30,7 +31,7 @@ bm.addEventListener('mousedown', () => minus(timers[1]));
 bp.addEventListener('mousedown', () => plus(timers[1]));
 
 start.addEventListener('click', () => {
-  timer(timers[0]);
+  timer.bind(timers[0])();
   toggleBtns();
 });
 stop.addEventListener('click', stopAll)
@@ -91,15 +92,15 @@ function plusAction(x) {
 }
 
 //timer function
-function timer(x) {
-  let minuteCount = x.minutes,
-    secondsCount = x.seconds,
-    totalTime = x.minutes * 60 + x.seconds,
+function timer() {
+  let minuteCount = this.minutes,
+    secondsCount = this.seconds,
+    totalTime = this.minutes * 60 + this.seconds,
     progress = 0;
-  x.bar.max = totalTime;
+  this.bar.max = totalTime;
   interval = setInterval(() => {
-    x.display.textContent = `${minTwoDidgets(minuteCount)}:${minTwoDidgets(secondsCount)}`;
-    x.bar.value = progress;
+    this.display.textContent = `${minTwoDidgets(minuteCount)}:${minTwoDidgets(secondsCount)}`;
+    this.bar.value = progress;
     progress++;
     totalTime--;
     secondsCount--;
@@ -107,19 +108,13 @@ function timer(x) {
     if (totalTime < 0) {
       clearInterval(interval);
       bleep.play();
-      callTimer()
+      callTimer(this.id)
     }
   }, 1000);
 }
 
-function callTimer() {
-  if (timerCount % 2 === 0) {
-    timer(timers[1]);
-    timerCount++;
-  } else {
-    timer(timers[0]);
-    timerCount--;
-  }
+function callTimer(x) {
+  x === 0 ? timer.bind(timers[1])() : timer.bind(timers[0])();
 }
 
 function toggleBtns() {
