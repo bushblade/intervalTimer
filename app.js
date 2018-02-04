@@ -14,10 +14,8 @@ let intMinutes = 5,
   intSeconds = 0,
   breakMinutes = 1,
   breakSeconds = 0,
-  timerCount = 2;
-
-let interval1;
-let interval2;
+  timerCount = 2,
+  interval;
 
 sm.addEventListener('click', intImeMinus);
 sp.addEventListener('click', intTimePlus);
@@ -25,7 +23,7 @@ bm.addEventListener('click', breakMinus);
 bp.addEventListener('click', breakPlus);
 
 start.addEventListener('click', function () {
-  timer(intMinutes, intTime, intervalBar, interval1);
+  timer(intMinutes, intTime, intervalBar, interval);
   toggleBtns();
 });
 
@@ -33,6 +31,8 @@ stop.addEventListener('click', stopAll)
 
 function stopAll() {
   stopInterval();
+  clearInterval(interval);
+  clearInterval(1);
   intTime.textContent = `${minTwoDidgets(intMinutes)}:${minTwoDidgets(intSeconds)}`;
   breakTime.textContent = `${minTwoDidgets(breakMinutes)}:${minTwoDidgets(breakSeconds)}`;
   intervalBar.value = 0;
@@ -41,9 +41,10 @@ function stopAll() {
   timerCount = 2;
 }
 
+//a dirty desperate hack that needs solving!
 function stopInterval() {
-  clearInterval(1);
-  clearInterval(2);
+  for (let i = 0; i < 100; i++)
+    clearInterval(i);
 }
 
 function toggleBtns() {
@@ -90,7 +91,7 @@ function timer(minutes, timer, bar, interval) {
     secondsCount--;
     secondsCount < 0 ? (secondsCount = 59, minuteCount--) : false;
     if (totalTime < 0) {
-      stopInterval();
+      clearInterval(interval);
       callTimer()
     }
   }, 1000);
@@ -105,9 +106,10 @@ function minTwoDidgets(num) {
 
 function callTimer() {
   if (timerCount % 2 === 0) {
-    timer(breakMinutes, breakTime, breakBar, interval2);
+    timer(breakMinutes, breakTime, breakBar, interval);
+    timerCount++;
   } else {
-    timer(intMinutes, intTime, intervalBar, interval1);
+    timer(intMinutes, intTime, intervalBar, interval);
+    timerCount--;
   }
-  timerCount++;
 }
