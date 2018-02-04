@@ -32,30 +32,40 @@ stop.addEventListener('click', stopAll)
 function stopAll() {
   clearInterval(interval);
   timers.forEach(x => {
-    x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
+    setDisplay(x);
     x.bar.value = 0;
   });
   toggleBtns();
   timerCount = 2;
 }
 
+function setDisplay(x) {
+  x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
+}
+
 function minus(x) {
-  if (x.minutes !== 1) {
+  if (x.minutes > 1) {
     x.minutes--;
-    x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
+  } else if (x.seconds === 0) {
+    x.minutes = 0;
+    x.seconds = 59;
+  } else {
+    x.seconds--;
   }
+  setDisplay(x);
 }
 
 function plus(x) {
+  x.seconds = 0;
   x.minutes++;
-  x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
+  setDisplay(x);
 }
 
 //timer function
 function timer(x) {
   let minuteCount = x.minutes,
-    secondsCount = 0,
-    totalTime = x.minutes * 60,
+    secondsCount = x.seconds,
+    totalTime = x.minutes * 60 + x.seconds,
     progress = 0;
   x.bar.max = totalTime;
   interval = setInterval(() => {
