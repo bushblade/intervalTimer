@@ -17,17 +17,22 @@ const timers = [{
 ]
 
 let interval,
-  timerCount = 2;
+  timerCount = 2,
+  btnRepeat;
 
-sm.addEventListener('click', () => minus(timers[0]));
-sp.addEventListener('click', () => plus(timers[0]));
-bm.addEventListener('click', () => minus(timers[1]));
-bp.addEventListener('click', () => plus(timers[1]));
-start.addEventListener('click', function () {
+sm.addEventListener('mousedown', () => minus(timers[0]));
+sp.addEventListener('mousedown', () => plus(timers[0]));
+bm.addEventListener('mousedown', () => minus(timers[1]));
+bp.addEventListener('mousedown', () => plus(timers[1]));
+
+start.addEventListener('click', () => {
   timer(timers[0]);
   toggleBtns();
 });
 stop.addEventListener('click', stopAll)
+
+allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepeat)));
+allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)));
 
 function stopAll() {
   clearInterval(interval);
@@ -44,21 +49,25 @@ function setDisplay(x) {
 }
 
 function minus(x) {
-  if (x.minutes > 1) {
-    x.minutes--;
-  } else if (x.seconds === 0) {
-    x.minutes = 0;
-    x.seconds = 59;
-  } else {
-    x.seconds--;
-  }
-  setDisplay(x);
+  btnRepeat = setInterval(() => {
+    if (x.minutes > 1) {
+      x.minutes--;
+    } else if (x.seconds === 0) {
+      x.minutes = 0;
+      x.seconds = 59;
+    } else {
+      x.seconds--;
+    }
+    setDisplay(x);
+  }, 150);
 }
 
 function plus(x) {
-  x.seconds = 0;
-  x.minutes++;
-  setDisplay(x);
+  btnRepeat = setInterval(() => {
+    x.seconds = 0;
+    x.minutes++;
+    setDisplay(x);
+  }, 150);
 }
 
 //timer function
