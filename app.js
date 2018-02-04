@@ -2,49 +2,41 @@ const start = document.getElementById('start'),
   stop = document.getElementById('stop'),
   allBtns = Array.from(document.querySelectorAll('button'));
 
-const sessionTimer = {
-  minutes: 5,
-  seconds: 0,
-  display: document.getElementById('int-time'),
-  bar: document.getElementById('interval-bar')
-}
-
-const breakTimer = {
-  minutes: 5,
-  seconds: 0,
-  display: document.getElementById('break-time'),
-  bar: document.getElementById('break-bar')
-}
+const timers = [{
+    minutes: 5,
+    seconds: 0,
+    display: document.getElementById('int-time'),
+    bar: document.getElementById('interval-bar')
+  },
+  {
+    minutes: 5,
+    seconds: 0,
+    display: document.getElementById('break-time'),
+    bar: document.getElementById('break-bar')
+  }
+]
 
 let interval,
   timerCount = 2;
 
-sm.addEventListener('click', () => minus(sessionTimer));
-sp.addEventListener('click', () => plus(sessionTimer));
-bm.addEventListener('click', () => minus(breakTimer));
-bp.addEventListener('click', () => plus(breakTimer));
+sm.addEventListener('click', () => minus(timers[0]));
+sp.addEventListener('click', () => plus(timers[0]));
+bm.addEventListener('click', () => minus(timers[1]));
+bp.addEventListener('click', () => plus(timers[1]));
 start.addEventListener('click', function () {
-  timer(sessionTimer);
+  timer(timers[0]);
   toggleBtns();
 });
 stop.addEventListener('click', stopAll)
 
 function stopAll() {
-  stopInterval();
   clearInterval(interval);
-  clearInterval(1);
-  sessionTimer.display.textContent = `${minTwoDidgets(sessionTimer.minutes)}:${minTwoDidgets(sessionTimer.seconds)}`;
-  breakTimer.display.textContent = `${minTwoDidgets(breakTimer.minutes)}:${minTwoDidgets(breakTimer.seconds)}`;
-  sessionTimer.bar.value = 0;
-  breakTimer.bar.value = 0;
+  timers.forEach(x => {
+    x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
+    x.bar.value = 0;
+  });
   toggleBtns();
   timerCount = 2;
-}
-
-//a dirty desperate hack that needs solving!
-function stopInterval() {
-  for (let i = 0; i < 100; i++)
-    clearInterval(i);
 }
 
 function minus(x) {
@@ -82,10 +74,10 @@ function timer(x) {
 
 function callTimer() {
   if (timerCount % 2 === 0) {
-    timer(breakTimer);
+    timer(timers[1]);
     timerCount++;
   } else {
-    timer(sessionTimer);
+    timer(timers[0]);
     timerCount--;
   }
 }
