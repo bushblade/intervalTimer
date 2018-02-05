@@ -19,7 +19,7 @@ const start = document.getElementById('start'),
   bleep = new Howl({
     src: ['bleep.mp3']
   }),
-  callTimer = x => x === 0 ? timer.bind(timers[1])() : timer.bind(timers[0])(),
+  callTimer = x => x === 0 ? timer.call(timers[1]) : timer.call(timers[0]),
   toggleBtns = () => allBtns.forEach(x => x.classList.toggle('is-hidden')),
   minTwoDidgets = num => String(num).length < 2 ? x = `0${num}` : num,
   setDisplay = x => x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
@@ -33,7 +33,7 @@ document.getElementById('bm').addEventListener('mousedown', () => minus(timers[1
 document.getElementById('bp').addEventListener('mousedown', () => plus(timers[1]));
 stop.addEventListener('click', stopAll)
 start.addEventListener('click', () => {
-  timer.bind(timers[0])();
+  timer.call(timers[0]);
   toggleBtns();
 });
 
