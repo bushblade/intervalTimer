@@ -1,40 +1,41 @@
-const bleep = new Howl({
-  src: ['bleep.mp3']
-});
-
 const start = document.getElementById('start'),
   stop = document.getElementById('stop'),
-  allBtns = Array.from(document.querySelectorAll('button'));
-
-const timers = [{
-    minutes: 5,
-    seconds: 0,
-    display: document.getElementById('int-time'),
-    bar: document.getElementById('interval-bar'),
-    id: 0
-  },
-  {
-    minutes: 5,
-    seconds: 0,
-    display: document.getElementById('break-time'),
-    bar: document.getElementById('break-bar'),
-    id: 1
-  }
-]
+  allBtns = Array.from(document.querySelectorAll('button')),
+  timers = [{
+      minutes: 5,
+      seconds: 0,
+      display: document.getElementById('int-time'),
+      bar: document.getElementById('interval-bar'),
+      id: 0
+    },
+    {
+      minutes: 5,
+      seconds: 0,
+      display: document.getElementById('break-time'),
+      bar: document.getElementById('break-bar'),
+      id: 1
+    }
+  ],
+  bleep = new Howl({
+    src: ['bleep.mp3']
+  }),
+  callTimer = x => x === 0 ? timer.bind(timers[1])() : timer.bind(timers[0])(),
+  toggleBtns = () => allBtns.forEach(x => x.classList.toggle('is-hidden')),
+  minTwoDidgets = num => String(num).length < 2 ? x = `0${num}` : num,
+  setDisplay = x => x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
 
 let interval,
   btnRepeat;
 
-sm.addEventListener('mousedown', () => minus(timers[0]));
-sp.addEventListener('mousedown', () => plus(timers[0]));
-bm.addEventListener('mousedown', () => minus(timers[1]));
-bp.addEventListener('mousedown', () => plus(timers[1]));
-
+document.getElementById('sm').addEventListener('mousedown', () => minus(timers[0]));
+document.getElementById('sp').addEventListener('mousedown', () => plus(timers[0]));
+document.getElementById('bm').addEventListener('mousedown', () => minus(timers[1]));
+document.getElementById('bp').addEventListener('mousedown', () => plus(timers[1]));
+stop.addEventListener('click', stopAll)
 start.addEventListener('click', () => {
   timer.bind(timers[0])();
   toggleBtns();
 });
-stop.addEventListener('click', stopAll)
 
 allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepeat)));
 allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)));
@@ -47,10 +48,6 @@ function stopAll() {
   });
   toggleBtns();
   timerCount = 2;
-}
-
-function setDisplay(x) {
-  x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
 }
 
 //minus button stuff to do
@@ -91,7 +88,6 @@ function plusAction(x) {
   setDisplay(x);
 }
 
-//timer function
 function timer() {
   let minuteCount = this.minutes,
     secondsCount = this.seconds,
@@ -111,18 +107,4 @@ function timer() {
       callTimer(this.id)
     }
   }, 1000);
-}
-
-function callTimer(x) {
-  x === 0 ? timer.bind(timers[1])() : timer.bind(timers[0])();
-}
-
-function toggleBtns() {
-  allBtns.forEach(x => x.classList.toggle('is-hidden'));
-}
-
-function minTwoDidgets(num) {
-  let x = String(num);
-  x.length < 2 ? x = `0${num}` : false;
-  return x;
 }
