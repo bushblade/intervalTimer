@@ -43,57 +43,42 @@ document.getElementById('sm').addEventListener('mousedown', () => minus(timers[0
 document.getElementById('sp').addEventListener('mousedown', () => plus(timers[0]))
 document.getElementById('bm').addEventListener('mousedown', () => minus(timers[1]))
 document.getElementById('bp').addEventListener('mousedown', () => plus(timers[1]))
-stop.addEventListener('click', stopAll)
-pause.addEventListener('click', pauseAll)
-
-start.addEventListener('click', () => {
-  timers.forEach(x => {
-    x.minCounter = x.minutes
-    x.secCounter = x.seconds
-    x.progress = 0
-    x.totalTime = 0
-    x.bar.value = 0
-    x.totalTime = x.minCounter * 60 + x.secCounter
-    x.bar.max = x.totalTime
-    setDisplay(x)
-  })
-  timer.call(timers[0])
-  toggleHidden()
-  pauseIcon.innerHTML = '<i class="fas fa-pause"></i>'
-  pause.classList.remove('is-success')
-  pause.classList.add('is-info')  
-})
-
 allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepeat)))
 allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)))
+stop.addEventListener('click', stopAll)
+pause.addEventListener('click', pauseAll)
+start.addEventListener('click', () => {
+  reset()
+  timer.call(timers[0])
+  toggleHidden()
+  showPause()
+})
+
+function showPause() {
+  pauseIcon.innerHTML = '<i class="fas fa-pause"></i>'
+  pause.classList.remove('is-success')
+  pause.classList.add('is-info')
+}
+function showPlay(){
+  pauseIcon.innerHTML = '<i class="fas fa-play"></i>'
+  pause.classList.remove('is-info')
+  pause.classList.add('is-success')
+}
 
 function pauseAll() {
   if (running) {
     clearInterval(interval)
     running = false
-    pauseIcon.innerHTML = '<i class="fas fa-play"></i>'
-    pause.classList.remove('is-info')
-    pause.classList.add('is-success')
+    showPlay()
   } else {
     timer.call(timers[timerSwitch])
-    pauseIcon.innerHTML = '<i class="fas fa-pause"></i>'
-    pause.classList.remove('is-success')
-    pause.classList.add('is-info')
+    showPause()
   }
 }
 
 function stopAll() {
   clearInterval(interval)
-  timers.forEach(x => {
-    x.minCounter = x.minutes
-    x.secCounter = x.seconds
-    x.progress = 0
-    x.totalTime = 0
-    x.bar.value = 0
-    x.totalTime = x.minCounter * 60 + x.secCounter
-    x.bar.max = x.totalTime
-    setDisplay(x)
-  })
+  reset()
   toggleHidden()
 }
 
@@ -154,6 +139,11 @@ function timer() {
 }
 
 function callTimer(x) {
+  reset()
+  x === 0 ? timer.call(timers[1]) : timer.call(timers[0])
+}
+
+function reset() {
   timers.forEach(e => {
     e.minCounter = e.minutes
     e.secCounter = e.seconds
@@ -163,5 +153,4 @@ function callTimer(x) {
     e.bar.max = e.totalTime
     setDisplay(e)
   })
-  x === 0 ? timer.call(timers[1]) : timer.call(timers[0])
 }
