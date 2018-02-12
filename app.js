@@ -121,8 +121,8 @@ function timer() {
   running = true
   interval = setInterval(() => {
     this.display.textContent = `${minTwoDidgets(this.minCounter)}:${minTwoDidgets(this.secCounter)}`
-    this.bar.value = this.progress
     this.progress++
+    this.bar.value = this.progress
       this.totalTime--
       this.secCounter--
       this.secCounter < 0 ? (this.secCounter = 59, this.minCounter--) : false
