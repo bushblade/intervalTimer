@@ -1,9 +1,16 @@
 const start = document.getElementById('start'),
   stop = document.getElementById('stop'),
+  pause = document.getElementById('pause'),
   allBtns = Array.from(document.querySelectorAll('button')),
+  hideMe = Array.from(document.querySelectorAll('.hide-me')),
+  pauseIcon = document.getElementById('pause-icon'),
   timers = [{
       minutes: 5,
       seconds: 0,
+      minCounter: 5,
+      secCounter: 0,
+      totalTime: 0,
+      progress: 0,
       display: document.getElementById('int-time'),
       bar: document.getElementById('interval-bar'),
       id: 0
@@ -11,6 +18,10 @@ const start = document.getElementById('start'),
     {
       minutes: 5,
       seconds: 0,
+      minCounter: 5,
+      secCounter: 0,
+      totalTime: 0,
+      progress: 0,
       display: document.getElementById('break-time'),
       bar: document.getElementById('break-bar'),
       id: 1
@@ -19,92 +30,138 @@ const start = document.getElementById('start'),
   bleep = new Howl({
     src: ['bleep.mp3']
   }),
-  callTimer = x => x === 0 ? timer.call(timers[1]) : timer.call(timers[0]),
-  toggleBtns = () => allBtns.forEach(x => x.classList.toggle('is-hidden')),
+  toggleHidden = () => hideMe.forEach(x => x.classList.toggle('is-hidden')),
   minTwoDidgets = num => String(num).length < 2 ? x = `0${num}` : num,
-  setDisplay = x => x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`;
+  setDisplay = x => x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`
 
 let interval,
-  btnRepeat;
+  btnRepeat,
+  timerSwitch,
+  running
 
-document.getElementById('sm').addEventListener('mousedown', () => minus(timers[0]));
-document.getElementById('sp').addEventListener('mousedown', () => plus(timers[0]));
-document.getElementById('bm').addEventListener('mousedown', () => minus(timers[1]));
-document.getElementById('bp').addEventListener('mousedown', () => plus(timers[1]));
+document.getElementById('sm').addEventListener('mousedown', () => minus(timers[0]))
+document.getElementById('sp').addEventListener('mousedown', () => plus(timers[0]))
+document.getElementById('bm').addEventListener('mousedown', () => minus(timers[1]))
+document.getElementById('bp').addEventListener('mousedown', () => plus(timers[1]))
 stop.addEventListener('click', stopAll)
-start.addEventListener('click', () => {
-  timer.call(timers[0]);
-  toggleBtns();
-});
+pause.addEventListener('click', pauseAll)
 
-allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepeat)));
-allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)));
+start.addEventListener('click', () => {
+  timers.forEach(x => {
+    x.minCounter = x.minutes
+    x.secCounter = x.seconds
+    x.progress = 0
+    x.totalTime = 0
+    x.bar.value = 0
+    x.totalTime = x.minCounter * 60 + x.secCounter
+    x.bar.max = x.totalTime
+    setDisplay(x)
+  })
+  timer.call(timers[0])
+  toggleHidden()
+  pauseIcon.innerHTML = '<i class="fas fa-pause"></i>'
+  pause.classList.remove('is-success')
+  pause.classList.add('is-info')  
+})
+
+allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepeat)))
+allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)))
+
+function pauseAll() {
+  if (running) {
+    clearInterval(interval)
+    running = false
+    pauseIcon.innerHTML = '<i class="fas fa-play"></i>'
+    pause.classList.remove('is-info')
+    pause.classList.add('is-success')
+  } else {
+    timer.call(timers[timerSwitch])
+    pauseIcon.innerHTML = '<i class="fas fa-pause"></i>'
+    pause.classList.remove('is-success')
+    pause.classList.add('is-info')
+  }
+}
 
 function stopAll() {
-  clearInterval(interval);
+  clearInterval(interval)
   timers.forEach(x => {
-    setDisplay(x);
-    x.bar.value = 0;
-  });
-  toggleBtns();
-  timerCount = 2;
+    x.minCounter = x.minutes
+    x.secCounter = x.seconds
+    x.progress = 0
+    x.totalTime = 0
+    x.bar.value = 0
+    x.totalTime = x.minCounter * 60 + x.secCounter
+    x.bar.max = x.totalTime
+    setDisplay(x)
+  })
+  toggleHidden()
 }
 
 //minus button stuff to do
 function minus(x) {
-  minusAction(x);
+  minusAction(x)
   btnRepeat = setInterval(() => {
-    minusAction(x);
-  }, 100);
+    minusAction(x)
+  }, 100)
 }
 
 function minusAction(x) {
   if (x.minutes > 1) {
-    x.minutes--;
+    x.minutes--
   } else if (x.seconds === 0) {
-    x.minutes = 0;
-    x.seconds = 59;
+    x.minutes = 0
+    x.seconds = 59
   } else {
-    x.seconds--;
+    x.seconds--
   }
-  setDisplay(x);
+  setDisplay(x)
 }
 
 //plus button stuff to do
 function plus(x) {
-  plusAction(x);
+  plusAction(x)
   btnRepeat = setInterval(() => {
-    plusAction(x);
-  }, 100);
+    plusAction(x)
+  }, 100)
 }
 
 function plusAction(x) {
   if (x.seconds < 59 && x.seconds !== 0) {
-    x.seconds++;
+    x.seconds++
   } else {
-    x.minutes++;
-    x.seconds = 0;
+    x.minutes++
+      x.seconds = 0
   }
-  setDisplay(x);
+  setDisplay(x)
 }
 
 function timer() {
-  let minuteCount = this.minutes,
-    secondsCount = this.seconds,
-    totalTime = this.minutes * 60 + this.seconds,
-    progress = 0;
-  this.bar.max = totalTime;
+  timerSwitch = this.id
+  running = true
   interval = setInterval(() => {
-    this.display.textContent = `${minTwoDidgets(minuteCount)}:${minTwoDidgets(secondsCount)}`;
-    this.bar.value = progress;
-    progress++;
-    totalTime--;
-    secondsCount--;
-    secondsCount < 0 ? (secondsCount = 59, minuteCount--) : false;
-    if (totalTime < 0) {
-      clearInterval(interval);
-      bleep.play();
+    this.display.textContent = `${minTwoDidgets(this.minCounter)}:${minTwoDidgets(this.secCounter)}`
+    this.bar.value = this.progress
+    this.progress++
+      this.totalTime--
+      this.secCounter--
+      this.secCounter < 0 ? (this.secCounter = 59, this.minCounter--) : false
+    if (this.totalTime < 0) {
+      clearInterval(interval)
+      bleep.play()
       callTimer(this.id)
     }
-  }, 1000);
+  }, 1000)
+}
+
+function callTimer(x) {
+  timers.forEach(e => {
+    e.minCounter = e.minutes
+    e.secCounter = e.seconds
+    e.progress = 0
+    e.bar.value = 0
+    e.totalTime = e.minCounter * 60 + e.secCounter
+    e.bar.max = e.totalTime
+    setDisplay(e)
+  })
+  x === 0 ? timer.call(timers[1]) : timer.call(timers[0])
 }

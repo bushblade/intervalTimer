@@ -13,72 +13,100 @@
 
 <body>
   <div class="container">
-    <!-- session -->
     <div class="columns is-centered">
-      <div class="column is-half is-narrow">
-        <div class="box has-text-centered" id="session">
-          <h1 class="title">Session time</h1>
-          <div class="columns is-mobile">
-            <div class="column is-one-quarter">
-              <button class="button is-rounded is-info is-outlined is-fullwidth" id="sm">
-                <span class="icon">
-                  <i class="fas fa-minus"></i>
-                </span>
-              </button>
-            </div>
-            <div class="column is-half">
-              <h1 class="title" id="int-time">05:00
-              </h1>
-            </div>
-            <div class="column is-one-quarter">
-              <button class="button is-rounded is-info is-outlined is-fullwidth" id="sp">
-                <span class="icon">
-                  <i class="fas fa-plus"></i>
-                </span>
-              </button>
+      <div class="column is-half">
+
+
+        <!-- session -->
+        <div class="columns is-centered">
+          <div class="column">
+            <div class="box has-text-centered" id="session">
+              <h1 class="title">Session time</h1>
+              <div class="columns is-mobile">
+                <div class="column is-one-quarter">
+                  <button class="button is-rounded is-info is-outlined is-fullwidth hide-me" id="sm">
+                    <span class="icon">
+                      <i class="fas fa-minus"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="column is-half">
+                  <h1 class="title" id="int-time">05:00
+                  </h1>
+                </div>
+                <div class="column is-one-quarter">
+                  <button class="button is-rounded is-info is-outlined is-fullwidth hide-me" id="sp">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <progress class="progress is-large is-primary" value="" max="" id="interval-bar"></progress>
             </div>
           </div>
-          <progress class="progress is-large is-primary" value="" max="" id="interval-bar"></progress>
         </div>
-      </div>
-    </div>
 
-    <div class="columns is-centered">
-      <div class="column is-half is-narrow">
-        <button class="button is-fullwidth is-rounded is-primary is-medium" id="start"><span class="icon"><i class="fas fa-play"></i></span></button>
-        <button class="button is-fullwidth is-rounded is-danger is-hidden is-medium" id="stop"><span class="icon"><i class="fas fa-stop"></i></span></button>
-      </div>
-    </div>
+        <!-- controls -->
+        <div class="columns is-centeredis-multiline is-mobile">
 
-    <!-- break -->
-    <div class="columns is-centered">
-      <div class="column is-half is-narrow">
-        <div class="box has-text-centered">
-          <h1 class="title">Break time</h1>
-          <div class="columns is-mobile">
-            <div class="column is-one-quarter">
-              <button class="button is-rounded is-fullwidth is-info is-outlined" id="bm">
-                <span class="icon">
-                  <i class="fas fa-minus"></i>
-                </span>
-              </button>
-            </div>
-            <div class="column is-one-half">
-              <h1 class="title" id="break-time">05:00</h1>
-            </div>
-            <div class="column is-one-quarter">
-              <button class="button is-rounded is-fullwidth is-info is-outlined" id="bp">
-                <span class="icon">
-                  <i class="fas fa-plus"></i>
-                </span>
-              </button>
+          <div class="column is-12 hide-me">
+            <button class="button is-fullwidth is-rounded is-success is-medium" id="start">
+              <span class="icon">
+                <i class="fas fa-play"></i>
+              </span>
+            </button>
+          </div>
+
+          <div class="column is-half hide-me is-hidden">
+            <button class="button is-fullwidth is-rounded is-danger is-medium" id="stop">
+              <span class="icon">
+                <i class="fas fa-stop"></i>
+              </span>
+            </button>
+          </div>
+
+          <div class="column is-half hide-me is-hidden">
+            <button class="button is-fullwidth is-rounded is-info is-medium" id="pause">
+              <span class="icon" id="pause-icon">
+                <i class="fas fa-pause"></i>
+              </span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- break -->
+        <div class="columns is-centered">
+          <div class="column">
+            <div class="box has-text-centered">
+              <h1 class="title">Break time</h1>
+              <div class="columns is-mobile">
+                <div class="column is-one-quarter">
+                  <button class="button is-rounded is-fullwidth is-info is-outlined hide-me" id="bm">
+                    <span class="icon">
+                      <i class="fas fa-minus"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="column is-one-half">
+                  <h1 class="title" id="break-time">05:00</h1>
+                </div>
+                <div class="column is-one-quarter">
+                  <button class="button is-rounded is-fullwidth is-info is-outlined hide-me" id="bp">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <progress class="progress is-large is-warning" value="" max="" id="break-bar"></progress>
             </div>
           </div>
-          <progress class="progress is-large is-warning" value="" max="" id="break-bar"></progress>
         </div>
+
       </div>
     </div>
-
   </div>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler.core.min.js"></script>
   <script src="app.js"></script>
