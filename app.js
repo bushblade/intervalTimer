@@ -121,8 +121,8 @@ function timer() {
   running = true
   interval = setInterval(() => {
     this.display.textContent = `${minTwoDidgets(this.minCounter)}:${minTwoDidgets(this.secCounter)}`
-    this.progress++
     this.bar.value = this.progress
+    this.progress++
       this.totalTime--
       this.secCounter--
       this.secCounter < 0 ? (this.secCounter = 59, this.minCounter--) : false
@@ -130,6 +130,9 @@ function timer() {
       clearInterval(interval)
       bleep.play()
       reset()
+      this.display.textContent = `00:00`
+      this.bar.max = 1
+      this.bar.value = 1
       this.id === 0 ? timer.call(timers[1]) : timer.call(timers[0])
     }
   }, 1000)
