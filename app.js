@@ -45,8 +45,21 @@ document.getElementById('bm').addEventListener('mousedown', () => minus(timers[1
 document.getElementById('bp').addEventListener('mousedown', () => plus(timers[1]))
 allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepeat)))
 allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)))
-stop.addEventListener('click', stopAll)
-pause.addEventListener('click', pauseAll)
+stop.addEventListener('click', () => {
+  clearInterval(interval)
+  reset()
+  toggleHidden()
+})
+pause.addEventListener('click', () => {
+  if (running) {
+    clearInterval(interval)
+    running = false
+    showPlay()
+  } else {
+    timer.call(timers[timerSwitch])
+    showPause()
+  }
+})
 start.addEventListener('click', () => {
   reset()
   timer.call(timers[0])
@@ -63,23 +76,6 @@ function showPlay(){
   pauseIcon.innerHTML = '<i class="fas fa-play"></i>'
   pause.classList.remove('is-info')
   pause.classList.add('is-success')
-}
-
-function pauseAll() {
-  if (running) {
-    clearInterval(interval)
-    running = false
-    showPlay()
-  } else {
-    timer.call(timers[timerSwitch])
-    showPause()
-  }
-}
-
-function stopAll() {
-  clearInterval(interval)
-  reset()
-  toggleHidden()
 }
 
 //minus button stuff to do
@@ -133,14 +129,10 @@ function timer() {
     if (this.totalTime < 0) {
       clearInterval(interval)
       bleep.play()
-      callTimer(this.id)
+      reset()
+      this.id === 0 ? timer.call(timers[1]) : timer.call(timers[0])
     }
   }, 1000)
-}
-
-function callTimer(x) {
-  reset()
-  x === 0 ? timer.call(timers[1]) : timer.call(timers[0])
 }
 
 function reset() {
