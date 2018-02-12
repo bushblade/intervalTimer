@@ -72,7 +72,8 @@ function showPause() {
   pause.classList.remove('is-success')
   pause.classList.add('is-info')
 }
-function showPlay(){
+
+function showPlay() {
   pauseIcon.innerHTML = '<i class="fas fa-play"></i>'
   pause.classList.remove('is-info')
   pause.classList.add('is-success')
