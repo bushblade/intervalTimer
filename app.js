@@ -31,7 +31,7 @@ const start = document.getElementById('start'),
     src: ['bleep.mp3']
   }),
   toggleHidden = () => hideMe.forEach(x => x.classList.toggle('is-hidden')),
-  minTwoDidgets = num => String(num).length < 2 ? x = `0${num}` : num,
+  minTwoDidgets = num => String(num).length < 2 ? num = `0${num}` : num,
   setDisplay = x => x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`
 
 let interval,
@@ -94,7 +94,7 @@ function minusAction(x) {
     x.minutes = 0
     x.seconds = 59
   } else {
-    x.seconds--
+    x.seconds > 1 ? x.seconds-- : false
   }
   setDisplay(x)
 }
