@@ -47,7 +47,8 @@ allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepea
 allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)))
 stop.addEventListener('click', () => {
   clearInterval(interval)
-  reset()
+  reset.call(timers[0])
+  reset.call(timers[1])
   toggleHidden()
 })
 pause.addEventListener('click', () => {
@@ -61,7 +62,8 @@ pause.addEventListener('click', () => {
   }
 })
 start.addEventListener('click', () => {
-  reset()
+  reset.call(timers[0])
+  reset.call(timers[1])
   timer.call(timers[0])
   toggleHidden()
   showPause()
@@ -130,23 +132,23 @@ function timer() {
     if (this.totalTime < 0) {
       clearInterval(interval)
       bleep.play()
-      reset()
       this.display.textContent = `00:00`
       this.bar.max = 1
       this.bar.value = 1
+      setTimeout(() => {
+        reset.call(this)
+      }, 1000) 
       this.id === 0 ? timer.call(timers[1]) : timer.call(timers[0])
     }
   }, 1000)
 }
 
-function reset() {
-  timers.forEach(e => {
-    e.minCounter = e.minutes
-    e.secCounter = e.seconds
-    e.progress = 0
-    e.bar.value = 0
-    e.totalTime = e.minCounter * 60 + e.secCounter
-    e.bar.max = e.totalTime
-    setDisplay(e)
-  })
+function reset(timer) {
+    this.minCounter = this.minutes
+    this.secCounter = this.seconds
+    this.progress = 0
+    this.bar.value = 0
+    this.totalTime = this.minCounter * 60 + this.secCounter
+    this.bar.max = this.totalTime
+    setDisplay(this)
 }
