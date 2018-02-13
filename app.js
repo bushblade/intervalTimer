@@ -39,10 +39,10 @@ let interval,
   timerSwitch,
   running
 
-document.getElementById('sm').addEventListener('mousedown', () => minus(timers[0]))
-document.getElementById('sp').addEventListener('mousedown', () => plus(timers[0]))
-document.getElementById('bm').addEventListener('mousedown', () => minus(timers[1]))
-document.getElementById('bp').addEventListener('mousedown', () => plus(timers[1]))
+document.getElementById('sm').addEventListener('mousedown', () => btnClick(timers[0], minusAction))
+document.getElementById('sp').addEventListener('mousedown', () => btnClick(timers[0], plusAction))
+document.getElementById('bm').addEventListener('mousedown', () => btnClick(timers[1], minusAction))
+document.getElementById('bp').addEventListener('mousedown', () => btnClick(timers[1], plusAction))
 allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepeat)))
 allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)))
 stop.addEventListener('click', () => {
@@ -55,10 +55,10 @@ pause.addEventListener('click', () => {
   if (running) {
     clearInterval(interval)
     running = false
-    showPlay()
+    togglePause('play', 'is-info', 'is-success')
   } else {
     timer.call(timers[timerSwitch])
-    showPause()
+    togglePause('pause', 'is-success', 'is-info')
   }
 })
 start.addEventListener('click', () => {
@@ -66,26 +66,19 @@ start.addEventListener('click', () => {
   reset.call(timers[1])
   timer.call(timers[0])
   toggleHidden()
-  showPause()
+  togglePause('pause', 'is-success', 'is-info')
 })
 
-function showPause() {
-  pauseIcon.innerHTML = '<i class="fas fa-pause"></i>'
-  pause.classList.remove('is-success')
-  pause.classList.add('is-info')
+function togglePause(fa, remove, add){
+  pauseIcon.innerHTML = `<i class="fas fa-${fa}"></i>`
+  pause.classList.remove(`${remove}`)
+  pause.classList.add(`${add}`)
 }
 
-function showPlay() {
-  pauseIcon.innerHTML = '<i class="fas fa-play"></i>'
-  pause.classList.remove('is-info')
-  pause.classList.add('is-success')
-}
-
-//minus button stuff to do
-function minus(x) {
-  minusAction(x)
+function btnClick (timer, callback){
+  callback(timer)
   btnRepeat = setInterval(() => {
-    minusAction(x)
+  callback(timer)
   }, 100)
 }
 
@@ -99,14 +92,6 @@ function minusAction(x) {
     x.seconds > 1 ? x.seconds-- : false
   }
   setDisplay(x)
-}
-
-//plus button stuff to do
-function plus(x) {
-  plusAction(x)
-  btnRepeat = setInterval(() => {
-    plusAction(x)
-  }, 100)
 }
 
 function plusAction(x) {
