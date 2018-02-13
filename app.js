@@ -99,7 +99,7 @@ function plusAction(x) {
     x.seconds++
   } else {
     x.minutes++
-      x.seconds = 0
+    x.seconds = 0
   }
   setDisplay(x)
 }
@@ -128,7 +128,7 @@ function timer() {
   }, 1000)
 }
 
-function reset(timer) {
+function reset() {
     this.minCounter = this.minutes
     this.secCounter = this.seconds
     this.progress = 0
