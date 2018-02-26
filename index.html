@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css">
   <link rel="stylesheet" href="style.css">
   <title>Interval Timer</title>
 </head>
@@ -20,7 +20,7 @@
         <div class="columns is-centered">
           <div class="column">
             <div class="box has-text-centered" id="session">
-              <h1 class="title">Session time</h1>
+              <h1 class="is-size-3">Session time</h1>
               <div class="columns is-mobile">
                 <div class="column is-one-quarter">
                   <button class="button is-rounded is-medium is-info is-outlined is-fullwidth hide-me" id="sm">
@@ -30,7 +30,7 @@
                   </button>
                 </div>
                 <div class="column is-half">
-                  <h1 class="title is-1" id="int-time">05:00
+                  <h1 class="is-size-1-tablet is-size-2-mobile has-text-weight-semibold" id="int-time">05:00
                   </h1>
                 </div>
                 <div class="column is-one-quarter">
@@ -41,7 +41,7 @@
                   </button>
                 </div>
               </div>
-              <progress class="progress is-large is-primary" value="" max="" id="interval-bar"></progress>
+              <progress class="progress is-large is-primary" value="1" max="1" id="interval-bar"></progress>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="columns is-centered">
           <div class="column">
             <div class="box has-text-centered">
-              <h1 class="title">Break time</h1>
+              <h1 class="is-size-3">Break time</h1>
               <div class="columns is-mobile">
                 <div class="column is-one-quarter">
                   <button class="button is-rounded is-medium is-fullwidth is-info is-outlined hide-me" id="bm">
@@ -89,7 +89,7 @@
                   </button>
                 </div>
                 <div class="column is-one-half">
-                  <h1 class="title is-1" id="break-time">05:00</h1>
+                  <h1 class="is-size-1-tablet is-size-2-mobile has-text-weight-semibold" id="break-time">05:00</h1>
                 </div>
                 <div class="column is-one-quarter">
                   <button class="button is-rounded is-medium is-fullwidth is-info is-outlined hide-me" id="bp">
@@ -99,11 +99,10 @@
                   </button>
                 </div>
               </div>
-              <progress class="progress is-large is-warning" value="" max="" id="break-bar"></progress>
+              <progress class="progress is-large is-warning" value="1" max="1" id="break-bar"></progress>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
