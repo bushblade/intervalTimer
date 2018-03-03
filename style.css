@@ -1,6 +1,5 @@
 html {
   background-color: hsl(0, 0%, 86%);
-
 }
 
 body {
@@ -13,4 +12,9 @@ body {
 
 .columns {
   margin: 0;
+}
+
+#int-time,
+#break-time {
+  font-family: 'PT Mono', monospace;
 }
