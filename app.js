@@ -7,8 +7,6 @@ const start = document.getElementById('start'),
   timers = [{
       minutes: 5,
       seconds: 0,
-      minCounter: 5,
-      secCounter: 0,
       totalTime: 0,
       progress: 0,
       display: document.getElementById('int-time'),
@@ -18,8 +16,6 @@ const start = document.getElementById('start'),
     {
       minutes: 5,
       seconds: 0,
-      minCounter: 5,
-      secCounter: 0,
       totalTime: 0,
       progress: 0,
       display: document.getElementById('break-time'),
@@ -37,8 +33,7 @@ const start = document.getElementById('start'),
 let interval,
   btnRepeat,
   timerSwitch,
-  running,
-  progress
+  running
 
 document.getElementById('sm').addEventListener('mousedown', () => btnClick(timers[0], minusAction))
 document.getElementById('sp').addEventListener('mousedown', () => btnClick(timers[0], plusAction))
@@ -48,7 +43,6 @@ allBtns.forEach(x => x.addEventListener('mouseout', () => clearInterval(btnRepea
 allBtns.forEach(x => x.addEventListener('mouseup', () => clearInterval(btnRepeat)))
 stop.addEventListener('click', () => {
   clearInterval(interval)
-  clearInterval(progress)
   reset.call(timers[0])
   reset.call(timers[1])
   toggleHidden()
@@ -56,7 +50,6 @@ stop.addEventListener('click', () => {
 pause.addEventListener('click', () => {
   if (running) {
     clearInterval(interval)
-    clearInterval(progress)
     running = false
     togglePause('play', 'is-info', 'is-success')
   } else {
@@ -102,7 +95,7 @@ function plusAction(x) {
     x.seconds++
   } else {
     x.minutes++
-      x.seconds = 0
+    x.seconds = 0
   }
   setDisplay(x)
 }
@@ -110,39 +103,33 @@ function plusAction(x) {
 function timer() {
   timerSwitch = this.id
   running = true
-
   interval = setInterval(() => {
-    this.display.textContent = `${minTwoDidgets(this.minCounter)}:${minTwoDidgets(this.secCounter)}`
+    this.display.textContent = `${convertMs(this.totalTime)}`
     this.totalTime--
-    this.secCounter--
-    this.secCounter < 0 ? (this.secCounter = 59, this.minCounter--) : false
-    if (this.totalTime < 0) {
-      clearInterval(interval)
-      clearInterval(progress)
+    this.progress++
+     this.bar.value = this.progress
+    if (this.totalTime === 100) {
       bleep.play()
-      this.display.textContent = `00:00`
+    } else if (this.totalTime < 0) {
+      clearInterval(interval)
       this.bar.max = 1
       this.bar.value = 1
-      setTimeout(() => {
-        reset.call(this)
-      }, 1000)
+      reset.call(this)
       this.id === 0 ? timer.call(timers[1]) : timer.call(timers[0])
     }
-  }, 1000)
-  setTimeout(() => {
-    progress = setInterval(() => {
-      this.bar.value = this.progress
-      this.progress++
-    }, 10)
-  }, 1000)
+  }, 10)
 }
 
 function reset() {
-  this.minCounter = this.minutes
-  this.secCounter = this.seconds
   this.progress = 0
   this.bar.value = 0
-  this.totalTime = this.minCounter * 60 + this.secCounter
-  this.bar.max = this.totalTime * 100
+  this.totalTime = this.minutes * 60 * 100 + this.seconds * 100
+  this.bar.max = this.totalTime - 100
   setDisplay(this)
+}
+
+function convertMs(ms) {
+  let min = Math.floor((ms / 100 / 60)),
+    sec = Math.floor((ms / 100) % 60)
+  return `${minTwoDidgets(min)}:${minTwoDidgets(sec)}`
 }
