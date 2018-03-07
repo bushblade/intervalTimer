@@ -60,7 +60,7 @@ pause.addEventListener('click', () => {
 start.addEventListener('click', () => {
   reset.call(timers[0])
   reset.call(timers[1])
-  timer.call(timers[0])
+  setTimeout(() => timer.call(timers[0]),1000)
   toggleHidden()
   togglePause('pause', 'is-success', 'is-info')
 })
