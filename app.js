@@ -7,6 +7,8 @@ const start = document.getElementById('start'),
   timers = [{
       minutes: 5,
       seconds: 0,
+      minCounter: 5,
+      secCounter: 0,
       totalTime: 0,
       progress: 0,
       display: document.getElementById('int-time'),
@@ -16,6 +18,8 @@ const start = document.getElementById('start'),
     {
       minutes: 5,
       seconds: 0,
+      minCounter: 5,
+      secCounter: 0,
       totalTime: 0,
       progress: 0,
       display: document.getElementById('break-time'),
@@ -60,21 +64,21 @@ pause.addEventListener('click', () => {
 start.addEventListener('click', () => {
   reset.call(timers[0])
   reset.call(timers[1])
-  setTimeout(() => timer.call(timers[0]),1000)
+  timer.call(timers[0])
   toggleHidden()
   togglePause('pause', 'is-success', 'is-info')
 })
 
-function togglePause(fa, remove, add) {
+function togglePause(fa, remove, add){
   pauseIcon.innerHTML = `<i class="fas fa-${fa}"></i>`
   pause.classList.remove(`${remove}`)
   pause.classList.add(`${add}`)
 }
 
-function btnClick(timer, callback) {
+function btnClick (timer, callback){
   callback(timer)
   btnRepeat = setInterval(() => {
-    callback(timer)
+  callback(timer)
   }, 100)
 }
 
@@ -104,32 +108,32 @@ function timer() {
   timerSwitch = this.id
   running = true
   interval = setInterval(() => {
-    this.display.textContent = `${convertMs(this.totalTime)}`
-    this.totalTime--
+    this.display.textContent = `${minTwoDidgets(this.minCounter)}:${minTwoDidgets(this.secCounter)}`
+    this.bar.value = this.progress
     this.progress++
-     this.bar.value = this.progress
-    if (this.totalTime === 100) {
-      bleep.play()
-    } else if (this.totalTime < 0) {
+      this.totalTime--
+      this.secCounter--
+      this.secCounter < 0 ? (this.secCounter = 59, this.minCounter--) : false
+    if (this.totalTime < 0) {
       clearInterval(interval)
+      bleep.play()
+      this.display.textContent = `00:00`
       this.bar.max = 1
       this.bar.value = 1
-      reset.call(this)
+      setTimeout(() => {
+        reset.call(this)
+      }, 1000) 
       this.id === 0 ? timer.call(timers[1]) : timer.call(timers[0])
     }
-  }, 10)
+  }, 1000)
 }
 
 function reset() {
-  this.progress = 0
-  this.bar.value = 0
-  this.totalTime = this.minutes * 60 * 100 + this.seconds * 100
-  this.bar.max = this.totalTime - 100
-  setDisplay(this)
-}
-
-function convertMs(ms) {
-  let min = Math.floor((ms / 100 / 60)),
-    sec = Math.floor((ms / 100) % 60)
-  return `${minTwoDidgets(min)}:${minTwoDidgets(sec)}`
+    this.minCounter = this.minutes
+    this.secCounter = this.seconds
+    this.progress = 0
+    this.bar.value = 0
+    this.totalTime = this.minCounter * 60 + this.secCounter
+    this.bar.max = this.totalTime
+    setDisplay(this)
 }
