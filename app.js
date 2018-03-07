@@ -137,3 +137,5 @@ function reset() {
     this.bar.max = this.totalTime
     setDisplay(this)
 }
+
+//testing git adding this line
