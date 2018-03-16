@@ -27,9 +27,6 @@ const start = document.getElementById('start'),
       id: 1
     }
   ],
-  bleep = new Howl({
-    src: ['bleep.mp3']
-  }),
   toggleHidden = () => hideMe.forEach(x => x.classList.toggle('is-hidden')),
   minTwoDidgets = num => String(num).length < 2 ? num = `0${num}` : num,
   setDisplay = x => x.display.textContent = `${minTwoDidgets(x.minutes)}:${minTwoDidgets(x.seconds)}`
@@ -116,7 +113,7 @@ function timer() {
       this.secCounter < 0 ? (this.secCounter = 59, this.minCounter--) : false
     if (this.totalTime < 0) {
       clearInterval(interval)
-      bleep.play()
+      bleep()
       this.display.textContent = `00:00`
       this.bar.max = 1
       this.bar.value = 1
@@ -138,4 +135,7 @@ function reset() {
     setDisplay(this)
 }
 
-//testing git adding this line
+function bleep (){
+    let sound = new Audio('bleep.mp3')
+    sound.play()
+}
