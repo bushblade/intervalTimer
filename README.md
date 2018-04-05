@@ -1,5 +1,5 @@
 ## A simpler interval timer
 
-project uses Bulma framework https://bulma.io/ and Howler js https://howlerjs.com/
+project uses [Bulma](https://bulma.io/) css framework  
 
 Live working example at http://www.bushbladeprojects.co.uk/intervalTimer/
