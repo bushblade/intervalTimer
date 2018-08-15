@@ -18,3 +18,7 @@ body {
 #break-time {
   font-family: 'PT Mono', monospace;
 }
+
+.progress::-webkit-progress-value {
+  transition: width 1s;
+}
